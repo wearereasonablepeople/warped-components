@@ -16,6 +16,13 @@
       "parserOptions": {"ecmaVersion": 9, "ecmaFeatures": {"jsx": true}},
       "globals": {},
       "rules": {"no-unused-vars": ["off"]}
+    },
+    {
+      "files": ["test/**/*.mjs"],
+      "env": {"es6": true, "node": true},
+      "rules": {
+        "max-len": ["off"]
+      }
     }
   ]
 }

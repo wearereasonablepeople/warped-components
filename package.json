@@ -1,7 +1,7 @@
 {
   "name": "warped-components",
   "version": "0.1.0",
-  "description": "An opinionated alternative to react-redux",
+  "description": "An opinionated way to build frontend applications",
   "main": "index.mjs",
   "module": "index.mjs",
   "scripts": {
@@ -9,35 +9,41 @@
     "doctest": "sanctuary-doctest",
     "lint": "sanctuary-lint",
     "release": "sanctuary-release",
-    "test": "npm run lint && sanctuary-test && npm run doctest"
+    "test": "npm run lint && sanctuary-test && npm run doctest",
+    "test:unit": "npx -n='--experimental-modules --no-warnings' oletus"
   },
   "repository": {
     "type": "git",
     "url": "git://github.com/wearereasonablepeople/warped-components.git"
   },
   "files": [
-    "/index.mjs.js",
+    "/index.mjs",
     "/LICENSE",
     "/package.json",
     "/README.md"
   ],
   "author": "Aldwin Vlasblom <aldwin.vlasblom@gmail.com> (https://github.com/Avaq)",
   "license": "MIT",
-  "dependencies": {},
+  "dependencies": {
+    "@cycle/run": "^4.4.0",
+    "react-collect": "github:wearereasonablepeople/react-collect#ba31af5c4304b94353a095f351063ab7f2d93641",
+    "react-redux": "^5.0.7",
+    "redux": "^4.0.0",
+    "warped-reducers": "github:wearereasonablepeople/warped-reducers#729e2e607793f783d5dc7fcfce18458da4bac533"
+  },
   "peerDependencies": {
-    "react": "~16.4.0",
-    "prop-types": "*"
+    "react": "^16.0.0",
+    "xstream": "^11.0.0"
   },
   "devDependencies": {
     "coveralls": "^3.0.2",
     "esm": "^3.0.68",
-    "nyc": "^12.0.2",
-    "prop-types": "^15.6.2",
+    "oletus": "^1.1.5",
     "react": "^16.4.1",
     "react-test-renderer": "^16.4.1",
-    "redux": "^4.0.0",
     "sanctuary-scripts": "^2.0.0",
     "sanctuary-show": "^1.0.0",
-    "sanctuary-type-classes": "^9.0.0"
+    "sanctuary-type-classes": "^9.0.0",
+    "xstream": "^11.7.0"
   }
 }
