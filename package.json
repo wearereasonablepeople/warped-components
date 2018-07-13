@@ -1,0 +1,43 @@
+{
+  "name": "warped-components",
+  "version": "0.0.2",
+  "description": "An opinionated alternative to react-redux",
+  "main": "index.mjs",
+  "module": "index.mjs",
+  "scripts": {
+    "coverage": "nyc report --reporter=text-lcov | coveralls",
+    "doctest": "sanctuary-doctest",
+    "lint": "sanctuary-lint",
+    "release": "sanctuary-release",
+    "test": "npm run lint && sanctuary-test && npm run doctest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/wearereasonablepeople/warped-components.git"
+  },
+  "files": [
+    "/index.mjs.js",
+    "/LICENSE",
+    "/package.json",
+    "/README.md"
+  ],
+  "author": "Aldwin Vlasblom <aldwin.vlasblom@gmail.com> (https://github.com/Avaq)",
+  "license": "MIT",
+  "dependencies": {},
+  "peerDependencies": {
+    "react": "~16.4.0",
+    "prop-types": "*"
+  },
+  "devDependencies": {
+    "coveralls": "^3.0.2",
+    "esm": "^3.0.68",
+    "nyc": "^12.0.2",
+    "prop-types": "^15.6.2",
+    "react": "^16.4.1",
+    "react-test-renderer": "^16.4.1",
+    "redux": "^4.0.0",
+    "sanctuary-scripts": "^2.0.0",
+    "sanctuary-show": "^1.0.0",
+    "sanctuary-type-classes": "^9.0.0"
+  }
+}

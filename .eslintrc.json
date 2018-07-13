@@ -1,0 +1,21 @@
+{
+  "root": true,
+  "extends": ["./node_modules/sanctuary-style/eslint-es3.json"],
+  "parserOptions": {
+    "sourceType": "module",
+    "ecmaVersion": 3
+  },
+  "globals": {
+    "Set": false
+  },
+  "overrides": [
+    {
+      "files": ["*.md"],
+      "plugins": ["markdown"],
+      "env": {"browser": true},
+      "parserOptions": {"ecmaVersion": 9, "ecmaFeatures": {"jsx": true}},
+      "globals": {},
+      "rules": {"no-unused-vars": ["off"]}
+    }
+  ]
+}
