@@ -1,3 +1,4 @@
+import '../test-coverage.mjs';
 import React from 'react';
 import assert from 'assert';
 import TestRenderer from 'react-test-renderer';

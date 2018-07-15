@@ -18,7 +18,7 @@
       "rules": {"no-unused-vars": ["off"]}
     },
     {
-      "files": ["test/**/*.mjs"],
+      "files": ["test-coverage.mjs", "report-coverage.mjs", "test/**/*.mjs"],
       "env": {"es6": true, "node": true},
       "rules": {
         "max-len": ["off"]

@@ -36,14 +36,18 @@
     "xstream": "^11.0.0"
   },
   "devDependencies": {
+    "c8": "^2.0.0",
     "coveralls": "^3.0.2",
     "esm": "^3.0.68",
+    "mkdirp": "^0.5.1",
     "oletus": "^1.1.5",
     "react": "^16.4.1",
     "react-test-renderer": "^16.4.1",
     "sanctuary-scripts": "^2.0.0",
     "sanctuary-show": "^1.0.0",
     "sanctuary-type-classes": "^9.0.0",
+    "signal-exit": "^3.0.2",
+    "v8-to-istanbul": "^1.2.0",
     "xstream": "^11.7.0"
   }
 }

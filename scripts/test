@@ -1,2 +1,6 @@
 #!/usr/bin/env bash
-NODE_OPTIONS='--experimental-modules --no-warnings' ./node_modules/.bin/oletus
+rm -rf coverage
+mkdir -p coverage/{v8,tmp}
+export NODE_OPTIONS='--experimental-modules --no-warnings'
+./node_modules/.bin/oletus
+node ./report-coverage.mjs index.mjs test/index.mjs
