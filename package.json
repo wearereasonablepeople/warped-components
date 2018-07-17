@@ -2,12 +2,14 @@
   "name": "warped-components",
   "version": "0.1.0",
   "description": "An opinionated alternative to react-redux",
-  "main": "index.mjs",
+  "main": "index",
   "module": "index.mjs",
   "scripts": {
     "coverage": "nyc report --reporter=text-lcov | coveralls",
     "doctest": "sanctuary-doctest",
     "lint": "sanctuary-lint",
+    "prepublishOnly": "rollup -c rollup.config.mjs",
+    "pretest": "rm -f index.js",
     "release": "sanctuary-release",
     "test": "npm run lint && sanctuary-test && npm run doctest"
   },
@@ -16,7 +18,8 @@
     "url": "git://github.com/wearereasonablepeople/warped-components.git"
   },
   "files": [
-    "/index.mjs.js",
+    "/index.js",
+    "/index.mjs",
     "/LICENSE",
     "/package.json",
     "/README.md"
@@ -36,6 +39,7 @@
     "react": "^16.4.1",
     "react-test-renderer": "^16.4.1",
     "redux": "^4.0.0",
+    "rollup": "^0.62.0",
     "sanctuary-scripts": "^2.0.0",
     "sanctuary-show": "^1.0.0",
     "sanctuary-type-classes": "^9.0.0"
