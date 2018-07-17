@@ -1,6 +1,6 @@
 {
   "name": "warped-components",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "An opinionated alternative to react-redux",
   "main": "index",
   "module": "index.mjs",

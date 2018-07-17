@@ -11,7 +11,7 @@ With older Node versions, use [`esm`][2].
 
 ## API
 
-#### <a name="connect" href="https://github.com/wearereasonablepeople/warped-components/blob/v0.1.0/index.mjs#L67">`connect :: ConnectOptions -⁠> ReactComponent -⁠> ReactComponent`</a>
+#### <a name="connect" href="https://github.com/wearereasonablepeople/warped-components/blob/v0.1.1/index.mjs#L67">`connect :: ConnectOptions -⁠> ReactComponent -⁠> ReactComponent`</a>
 
 Connects a component and its associated reducer to the store, using the
 given options to map the state to component properties. All options are
@@ -64,7 +64,7 @@ For the definition of `actions` and `reducer`, we recommend using
 recommend using an Optics library like [Ramda][3]'s `lens` related
 functions or [partial.lenses][4].
 
-#### <a name="Provider" href="https://github.com/wearereasonablepeople/warped-components/blob/v0.1.0/index.mjs#L197">`Provider :: ReactComponent`</a>
+#### <a name="Provider" href="https://github.com/wearereasonablepeople/warped-components/blob/v0.1.1/index.mjs#L197">`Provider :: ReactComponent`</a>
 
 This component wraps your tree and ensures that any connected children will
 be able to read from the store.
