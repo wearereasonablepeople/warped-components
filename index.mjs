@@ -37,8 +37,9 @@
 //.    facilitates a smaller main bundle, because the reducers and effects for
 //.    components outside of the initial render tree don't have to be included.
 //. 1. Your Redux reducers and Cycle applications are "hot by design". This
-//.    means that if you use [React Hot Loader][7], your reducer logic and
-//.    side-effect logic is also automatically hot-reloaded.
+//.    means that if you use `module.hot`, your reducer logic and side-effect
+//.    logic is also automatically hot-reloaded (given that you don't remount
+//.    the WarpedApp, but only its children).
 
 import React from 'react';
 import Redux from 'redux';
@@ -391,4 +392,3 @@ export function combineCycles(mains) {
 //. [4]: https://github.com/calmm-js/partial.lenses
 //. [5]: https://github.com/reactjs/react-redux
 //. [6]: http://redux.js.org/
-//. [7]: https://github.com/gaearon/react-hot-loader
