@@ -5,13 +5,40 @@
 //. An opinionated way to build frontend applications.
 //. Works nicely with [Warped Reducers][1].
 //.
+//. ## In a nutshell
+//.
 //. - The view is handled by React.
 //. - The state is handled by Redux.
 //. - The effects are handled by Cycle.
 //. - The wiring is handled by Warped Components.
 //.
-//. Usage in Node depends on `--experimental-modules`.
-//. With older Node versions, use [`esm`][2].
+//. Warped Components does two things to facilitate your application:
+//.
+//. 1. It manages the creation of your Redux store, and uses [React Redux][5]
+//.    to connect your components to the global state. But instead of taking
+//.    `mapStateToProps` and `mapDispatchToProps` functions, it takes
+//.    a `selectors` object whose values are functions that map the state to
+//.    individual properties, and an `actions` object whose values are
+//.    functions that given a payload, return a Redux Standard Action.
+//. 1. It lets you associate your Cycle applications and Redux reducers with
+//.    specific React components. Then, whenever React renders those
+//.    components, Warped Components will update the global Redux reducer to
+//.    contain only the reducers found in the tree, and it will shut down and
+//.    start up the appropriate Cycle applications based on which are present
+//.    in the tree. All of this is achieved by using [React Collect][2].
+//.
+//. This approach has the following benefits:
+//.
+//. 1. An architectural benefit, where all the logic related to a component,
+//.    including asynchronous side-effects and state transformations, are all
+//.    kept in a single place. This means that most changes to the application
+//.    will be centred around a single directory in your source code.
+//. 1. If you use code-splitting and multiple entry points, this approach
+//.    facilitates a smaller main bundle, because the reducers and effects for
+//.    components outside of the initial render tree don't have to be included.
+//. 1. Your Redux reducers and Cycle applications are "hot by design". This
+//.    means that if you use [React Hot Loader][7], your reducer logic and
+//.    side-effect logic is also automatically hot-reloaded.
 
 import React from 'react';
 import Redux from 'redux';
@@ -90,15 +117,15 @@ export function makeStateDriver(store) {
 //. * `selectors`: An object whose keys correspond to properties, and values
 //.   are functions that receive the state and return the value for the
 //.   property.
-//. * `actions`: A hashmap of action creators. The underlying component will
-//.   receive them as props, and when called, the resuling action is
+//. * `actions`: A hash-map of action creators. The underlying component will
+//.   receive them as props, and when called, the resulting action is
 //.   dispatched to the store.
 //. * `reducer`: A Redux reducer - a function which takes a state and an
 //.   action, and returns a new state. Warped Components makes sure than
 //.   whenever the connected component is mounted, this reducer will act as
 //.   part of the reducers of your store.
 //. * `effects`: A Cycle application - a function which takes a mapping of
-//.   stream / stream-producers, and retuns a mapping of streams.
+//.   stream / stream-producers, and returns a mapping of streams.
 //.
 //. If you would just like the reducer or effects to be mounted without a
 //. "view", for example when a reducer is in change of handling some state
@@ -184,7 +211,7 @@ export function warped(def) {
 //. It takes the following optional props:
 //.
 //. * `initialState`: Some initial state for your store.
-//. * `enhancer`: Store enhancer, allows middleware, debug tooling, etc.
+//. * `enhancer`: Store enhancer, allows middleware, debug tooling, etcetera.
 //. * `drivers`: Cycle drivers determine what kind of effects can occur.
 //.
 //. ```js
@@ -204,7 +231,6 @@ export function warped(def) {
 //.   document.findElementById ('app')
 //. );
 //. ```
-
 export function WarpedApp(props) {
   var self = this;
   React.Component.call (self, props);
@@ -298,7 +324,7 @@ WarpedApp.defaultProps = {
 //. accepted by `connect` from React Redux.
 //.
 //. The selectors are given the state (and previous props), and are expected
-//. to return a slice of the state. We recommend usings Optics, such as the
+//. to return a slice of the state. We recommend using Optics, such as the
 //. `lens`-related functions from [Ramda][2], to create the selectors.
 export function compileSelectors(selectors) {
   return function mapStateToProps(state, prevProps) {
@@ -360,8 +386,9 @@ export function combineCycles(mains) {
 }
 
 //. [1]: https://github.com/wearereasonablepeople/warped-reducers
-//. [2]: https://github.com/standard-things/esm
+//. [2]: https://github.com/wearereasonablepeople/react-collect
 //. [3]: http://ramdajs.com/
 //. [4]: https://github.com/calmm-js/partial.lenses
 //. [5]: https://github.com/reactjs/react-redux
 //. [6]: http://redux.js.org/
+//. [7]: https://github.com/gaearon/react-hot-loader
