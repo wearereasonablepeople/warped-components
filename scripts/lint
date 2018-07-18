@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+set -euf -o pipefail
+
+if [[ "${PUBLISHING-false}" == true ]] ; then
+  echo 'Running "npm install" to negate "npm prune"'
+  rm -r node_modules
+  npm install
+fi
+
+sanctuary-check-required-files
+node_modules/.bin/eslint \
+  --report-unused-disable-directives \
+  -- '*.mjs' 'test/*.mjs'
+sanctuary-lint-package-json
+sanctuary-lint-bower-json
+sanctuary-lint-readme
+sanctuary-lint-commit-messages
