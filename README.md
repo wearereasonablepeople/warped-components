@@ -37,14 +37,15 @@ This approach has the following benefits:
    facilitates a smaller main bundle, because the reducers and effects for
    components outside of the initial render tree don't have to be included.
 1. Your Redux reducers and Cycle applications are "hot by design". This
-   means that if you use [React Hot Loader][7], your reducer logic and
-   side-effect logic is also automatically hot-reloaded.
+   means that if you use `module.hot`, your reducer logic and side-effect
+   logic is also automatically hot-reloaded (given that you don't remount
+   the WarpedApp, but only its children).
 
 ## API
 
 ### Automatic wiring
 
-#### <a name="warped" href="https://github.com/wearereasonablepeople/warped-components/blob/v0.2.1/index.mjs#L108">`warped :: WarpedOptions -⁠> ReactComponent -⁠> ReactComponent`</a>
+#### <a name="warped" href="https://github.com/wearereasonablepeople/warped-components/blob/v0.2.2/index.mjs#L109">`warped :: WarpedOptions -⁠> ReactComponent -⁠> ReactComponent`</a>
 
 Does zero to two distinct things to a component, depending on the options:
 
@@ -123,7 +124,7 @@ export const App = ({data, loadData}) => (
 export default warped ({reducer, effects, selectors, actions}) (App);
 ```
 
-#### <a name="WarpedApp" href="https://github.com/wearereasonablepeople/warped-components/blob/v0.2.1/index.mjs#L199">`WarpedApp :: ReactComponent`</a>
+#### <a name="WarpedApp" href="https://github.com/wearereasonablepeople/warped-components/blob/v0.2.2/index.mjs#L200">`WarpedApp :: ReactComponent`</a>
 
 This component does the wiring for your application:
 
@@ -165,7 +166,7 @@ If you prefer using [React Redux][5] and [Redux][6] directly, rather than
 using the [`WarpedApp`](#WarpedApp), you can use these utilities to ease
 the interaction with [Warped Reducers][1].
 
-#### <a name="compileSelectors" href="https://github.com/wearereasonablepeople/warped-components/blob/v0.2.1/index.mjs#L321">`compileSelectors :: StrMap ((a, b) -⁠> c) -⁠> (a, b) -⁠> StrMap c`</a>
+#### <a name="compileSelectors" href="https://github.com/wearereasonablepeople/warped-components/blob/v0.2.2/index.mjs#L322">`compileSelectors :: StrMap ((a, b) -⁠> c) -⁠> (a, b) -⁠> StrMap c`</a>
 
 Given a mapping of selectors, returns a `mapStateToProps` function, as
 accepted by `connect` from React Redux.
@@ -174,20 +175,20 @@ The selectors are given the state (and previous props), and are expected
 to return a slice of the state. We recommend using Optics, such as the
 `lens`-related functions from [Ramda][2], to create the selectors.
 
-#### <a name="compileDispatchers" href="https://github.com/wearereasonablepeople/warped-components/blob/v0.2.1/index.mjs#L339">`compileDispatchers :: StrMap (a -⁠> b) -⁠> (b -⁠> c) -⁠> StrMap (a -⁠> c)`</a>
+#### <a name="compileDispatchers" href="https://github.com/wearereasonablepeople/warped-components/blob/v0.2.2/index.mjs#L340">`compileDispatchers :: StrMap (a -⁠> b) -⁠> (b -⁠> c) -⁠> StrMap (a -⁠> c)`</a>
 
 Given a mapping of action creators, as returned from
 [createReducer](#createReducer), returns a `mapDispatchToProps` function,
 as accepted by `connect` from React Redux.
 
-#### <a name="combineReducers" href="https://github.com/wearereasonablepeople/warped-components/blob/v0.2.1/index.mjs#L356">`combineReducers :: Array ((a, b) -⁠> a) -⁠> (a, b) -⁠> a`</a>
+#### <a name="combineReducers" href="https://github.com/wearereasonablepeople/warped-components/blob/v0.2.2/index.mjs#L357">`combineReducers :: Array ((a, b) -⁠> a) -⁠> (a, b) -⁠> a`</a>
 
 Given an array of reducers, returns a single reducer which transforms the
 state by calling all reducers in sequence.
 
 ### Cycle utilities
 
-#### <a name="combineCycles" href="https://github.com/wearereasonablepeople/warped-components/blob/v0.2.1/index.mjs#L370">`combineCycles :: Array (StrMap Any -⁠> StrMap Stream) -⁠> StrMap Any -⁠> StrMap Stream`</a>
+#### <a name="combineCycles" href="https://github.com/wearereasonablepeople/warped-components/blob/v0.2.2/index.mjs#L371">`combineCycles :: Array (StrMap Any -⁠> StrMap Stream) -⁠> StrMap Any -⁠> StrMap Stream`</a>
 
 Given an array of `main` functions that take sources and return sinks,
 returns a single `main` function which combines the effects of each.
@@ -198,4 +199,3 @@ returns a single `main` function which combines the effects of each.
 [4]: https://github.com/calmm-js/partial.lenses
 [5]: https://github.com/reactjs/react-redux
 [6]: http://redux.js.org/
-[7]: https://github.com/gaearon/react-hot-loader
