@@ -1,6 +1,7 @@
 //. # Warped Components
 //.
 //. [![Build Status](https://travis-ci.com/wearereasonablepeople/warped-components.svg?branch=master)](https://travis-ci.com/wearereasonablepeople/warped-components)
+//. [![Greenkeeper Enabled](https://badges.greenkeeper.io/wearereasonablepeople/warped-components.svg)](https://greenkeeper.io/)
 //.
 //. An opinionated way to build frontend applications.
 //. Works nicely with [Warped Reducers][1].
