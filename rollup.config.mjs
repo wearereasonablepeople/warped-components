@@ -9,6 +9,7 @@ export default {
   output: {
     format: 'umd',
     name: 'warpedComponents',
-    file: 'index.js'
+    file: 'index.js',
+    interop: false
   }
 };
