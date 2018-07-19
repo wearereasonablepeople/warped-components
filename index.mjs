@@ -127,7 +127,7 @@ export function makeStateDriver(store) {
 //.   receive them as props, and when called, the resulting action is
 //.   dispatched to the store.
 //. * `reducer`: A Redux reducer - a function which takes a state and an
-//.   action, and returns a new state. Warped Components makes sure than
+//.   action, and returns a new state. Warped Components makes sure that
 //.   whenever the connected component is mounted, this reducer will act as
 //.   part of the reducers of your store.
 //. * `effects`: A Cycle application - a function which takes a mapping of
