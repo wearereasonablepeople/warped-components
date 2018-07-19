@@ -1,6 +1,6 @@
 {
   "name": "warped-components",
-  "version": "0.2.3",
+  "version": "0.2.4",
   "description": "An opinionated way to build frontend applications",
   "main": "index",
   "module": "index.mjs",
