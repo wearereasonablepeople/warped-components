@@ -6,11 +6,15 @@
 //. An opinionated way to build frontend applications.
 //. Works nicely with [Warped Reducers][1].
 //.
+//. ```console
+//. $ npm install --save warped-components react xstream
+//. ```
+//.
 //. ## In a nutshell
 //.
 //. - The view is handled by React.
 //. - The state is handled by Redux.
-//. - The effects are handled by Cycle.
+//. - The effects are handled by Cycle with XStream.
 //. - The wiring is handled by Warped Components.
 //.
 //. Warped Components does two things to facilitate your application:
