@@ -50,7 +50,7 @@ This approach has the following benefits:
 
 ### Automatic wiring
 
-#### <a name="warped" href="https://github.com/wearereasonablepeople/warped-components/blob/v0.2.4/index.mjs#L114">`warped :: WarpedOptions -⁠> ReactComponent -⁠> ReactComponent`</a>
+#### <a name="warped" href="https://github.com/wearereasonablepeople/warped-components/blob/v0.2.5/index.mjs#L114">`warped :: WarpedOptions -⁠> ReactComponent -⁠> ReactComponent`</a>
 
 Does zero to two distinct things to a component, depending on the options:
 
@@ -66,7 +66,7 @@ The options (all optional, though at least one should be provided) are:
   receive them as props, and when called, the resulting action is
   dispatched to the store.
 * `reducer`: A Redux reducer - a function which takes a state and an
-  action, and returns a new state. Warped Components makes sure than
+  action, and returns a new state. Warped Components makes sure that
   whenever the connected component is mounted, this reducer will act as
   part of the reducers of your store.
 * `effects`: A Cycle application - a function which takes a mapping of
@@ -87,6 +87,7 @@ functions or [partial.lenses][4].
 import {warped} from 'warped-components';
 import {createReducer, noopAction} from 'warped-reducers';
 import {lensProp, compose, set, view} from 'ramda';
+import React from 'react';
 
 // We use a lens to describe our slice of the global state.
 // How you do it is up to you, though.
@@ -107,7 +108,7 @@ export const effects = ({action, http}) => ({
     url: 'https://api.github.com/users/Avaq',
     category: types.loadData
   }),
-  action: http.select (types.loadData).flatten ().map (({name}) =>
+  action: http.select (types.loadData).flatten ().map (({body: {name}}) =>
     actions.setData (name)
   )
 });
@@ -129,7 +130,7 @@ export const App = ({data, loadData}) => (
 export default warped ({reducer, effects, selectors, actions}) (App);
 ```
 
-#### <a name="WarpedApp" href="https://github.com/wearereasonablepeople/warped-components/blob/v0.2.4/index.mjs#L205">`WarpedApp :: ReactComponent`</a>
+#### <a name="WarpedApp" href="https://github.com/wearereasonablepeople/warped-components/blob/v0.2.5/index.mjs#L206">`WarpedApp :: ReactComponent`</a>
 
 This component does the wiring for your application:
 
@@ -152,16 +153,16 @@ import {WarpedApp} from 'warped-components';
 import {devToolsEnhancer} from 'redux-devtools-extension';
 import {makeHTTPDriver} from '@cycle/http';
 import {render} from 'react-dom';
+import React from 'react';
 import App from './my-app';
 
-const initialState = {some: 'state'};
 const drivers = {http: makeHTTPDriver ()};
 
 render (
-  <WarpedApp enhancer={devToolsEnhancer} drivers={drivers}>
+  <WarpedApp enhancer={devToolsEnhancer ()} drivers={drivers}>
     <App />
   </WarpedApp>,
-  document.findElementById ('app')
+  document.getElementById ('app')
 );
 ```
 
@@ -171,7 +172,7 @@ If you prefer using [React Redux][5] and [Redux][6] directly, rather than
 using the [`WarpedApp`](#WarpedApp), you can use these utilities to ease
 the interaction with [Warped Reducers][1].
 
-#### <a name="compileSelectors" href="https://github.com/wearereasonablepeople/warped-components/blob/v0.2.4/index.mjs#L327">`compileSelectors :: StrMap ((a, b) -⁠> c) -⁠> (a, b) -⁠> StrMap c`</a>
+#### <a name="compileSelectors" href="https://github.com/wearereasonablepeople/warped-components/blob/v0.2.5/index.mjs#L328">`compileSelectors :: StrMap ((a, b) -⁠> c) -⁠> (a, b) -⁠> StrMap c`</a>
 
 Given a mapping of selectors, returns a `mapStateToProps` function, as
 accepted by `connect` from React Redux.
@@ -180,20 +181,20 @@ The selectors are given the state (and previous props), and are expected
 to return a slice of the state. We recommend using Optics, such as the
 `lens`-related functions from [Ramda][2], to create the selectors.
 
-#### <a name="compileDispatchers" href="https://github.com/wearereasonablepeople/warped-components/blob/v0.2.4/index.mjs#L345">`compileDispatchers :: StrMap (a -⁠> b) -⁠> (b -⁠> c) -⁠> StrMap (a -⁠> c)`</a>
+#### <a name="compileDispatchers" href="https://github.com/wearereasonablepeople/warped-components/blob/v0.2.5/index.mjs#L346">`compileDispatchers :: StrMap (a -⁠> b) -⁠> (b -⁠> c) -⁠> StrMap (a -⁠> c)`</a>
 
 Given a mapping of action creators, as returned from
 [createReducer](#createReducer), returns a `mapDispatchToProps` function,
 as accepted by `connect` from React Redux.
 
-#### <a name="combineReducers" href="https://github.com/wearereasonablepeople/warped-components/blob/v0.2.4/index.mjs#L362">`combineReducers :: Array ((a, b) -⁠> a) -⁠> (a, b) -⁠> a`</a>
+#### <a name="combineReducers" href="https://github.com/wearereasonablepeople/warped-components/blob/v0.2.5/index.mjs#L363">`combineReducers :: Array ((a, b) -⁠> a) -⁠> (a, b) -⁠> a`</a>
 
 Given an array of reducers, returns a single reducer which transforms the
 state by calling all reducers in sequence.
 
 ### Cycle utilities
 
-#### <a name="combineCycles" href="https://github.com/wearereasonablepeople/warped-components/blob/v0.2.4/index.mjs#L376">`combineCycles :: Array (StrMap Any -⁠> StrMap Stream) -⁠> StrMap Any -⁠> StrMap Stream`</a>
+#### <a name="combineCycles" href="https://github.com/wearereasonablepeople/warped-components/blob/v0.2.5/index.mjs#L377">`combineCycles :: Array (StrMap Any -⁠> StrMap Stream) -⁠> StrMap Any -⁠> StrMap Stream`</a>
 
 Given an array of `main` functions that take sources and return sinks,
 returns a single `main` function which combines the effects of each.
