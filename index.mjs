@@ -148,6 +148,7 @@ export function makeStateDriver(store) {
 //. import {warped} from 'warped-components';
 //. import {createReducer, noopAction} from 'warped-reducers';
 //. import {lensProp, compose, set, view} from 'ramda';
+//. import React from 'react';
 //.
 //. // We use a lens to describe our slice of the global state.
 //. // How you do it is up to you, though.
@@ -168,7 +169,7 @@ export function makeStateDriver(store) {
 //.     url: 'https://api.github.com/users/Avaq',
 //.     category: types.loadData
 //.   }),
-//.   action: http.select (types.loadData).flatten ().map (({name}) =>
+//.   action: http.select (types.loadData).flatten ().map (({body: {name}}) =>
 //.     actions.setData (name)
 //.   )
 //. });
@@ -225,16 +226,16 @@ export function warped(def) {
 //. import {devToolsEnhancer} from 'redux-devtools-extension';
 //. import {makeHTTPDriver} from '@cycle/http';
 //. import {render} from 'react-dom';
+//. import React from 'react';
 //. import App from './my-app';
 //.
-//. const initialState = {some: 'state'};
 //. const drivers = {http: makeHTTPDriver ()};
 //.
 //. render (
-//.   <WarpedApp enhancer={devToolsEnhancer} drivers={drivers}>
+//.   <WarpedApp enhancer={devToolsEnhancer ()} drivers={drivers}>
 //.     <App />
 //.   </WarpedApp>,
-//.   document.findElementById ('app')
+//.   document.getElementById ('app')
 //. );
 //. ```
 export function WarpedApp(props) {
