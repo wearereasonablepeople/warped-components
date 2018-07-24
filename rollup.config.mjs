@@ -1,3 +1,4 @@
+import babel from 'rollup-plugin-babel';
 import pkg from './package.json';
 
 export default {
@@ -11,5 +12,10 @@ export default {
     name: 'warpedComponents',
     file: 'index.js',
     interop: false
-  }
+  },
+  plugins: [
+    babel ({
+      exclude: 'node_modules/**'
+    })
+  ]
 };

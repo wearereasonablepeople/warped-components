@@ -38,12 +38,16 @@
     "xstream": "^11.0.0"
   },
   "devDependencies": {
+    "babel-core": "^6.26.3",
+    "babel-plugin-transform-runtime": "^6.23.0",
+    "babel-preset-env": "^1.7.0",
     "coveralls": "^3.0.2",
     "esm": "^3.0.68",
     "oletus": "^1.1.5",
     "react": "^16.4.1",
     "react-test-renderer": "^16.4.1",
     "rollup": "^0.63.2",
+    "rollup-plugin-babel": "^3.0.7",
     "sanctuary-scripts": "^2.0.0",
     "sanctuary-show": "^1.0.0",
     "sanctuary-type-classes": "^9.0.0",
