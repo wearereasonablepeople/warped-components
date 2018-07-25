@@ -335,7 +335,7 @@ WarpedApp.defaultProps = {
 //. `lens`-related functions from [Ramda][2], to create the selectors.
 export function compileSelectors(selectors) {
   return function mapStateToProps(state, prevProps) {
-    const props = Object.create (null);
+    var props = Object.create (null);
     Object.entries (selectors).forEach (function(entry) {
       props[entry[0]] = entry[1] (state, prevProps);
     });
@@ -350,7 +350,7 @@ export function compileSelectors(selectors) {
 //. as accepted by `connect` from React Redux.
 export function compileDispatchers(actions) {
   return function mapDispatchToProps(dispatch) {
-    const props = Object.create (null);
+    var props = Object.create (null);
     Object.entries (actions).forEach (function(entry) {
       props[entry[0]] = function dispatchAction(payload) {
         return dispatch (entry[1] (payload));
