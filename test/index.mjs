@@ -43,7 +43,8 @@ function mockAction(payload) {
 
 function mockCycle(sources) {
   return {
-    action: sources.action.map (mockAction)
+    state: sources.state,
+    action: sources.action && sources.action.select ({type: 'increment'}).map (mockAction)
   };
 }
 
@@ -115,17 +116,17 @@ test ('combineReducers', function() {
 test ('combineCycles', function() {
   var main = combineCycles ([mockCycle]);
   eq (typeof main) ('function');
-  var sinks = main ({action: Stream.of (42)});
+  var sinks = main ({state: Stream.of (42)});
   eq (typeof sinks) ('object');
-  eq (typeof sinks.action) ('object');
-  eq (sinks.action instanceof Stream) (true);
+  eq (typeof sinks.state) ('object');
+  eq (sinks.state instanceof Stream) (true);
   return new Promise (function(res, rej) {
     var value;
-    sinks.action.addListener ({
+    sinks.state.addListener ({
       error: rej,
       next: function(_value) { value = _value; },
       complete: function() {
-        eq (value) ({type: 'MOCK', payload: 42});
+        eq (value) (42);
         res ();
       }
     });
