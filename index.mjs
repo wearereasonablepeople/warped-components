@@ -250,12 +250,17 @@ export function WarpedApp(props) {
 
   function actionDriver(sink$) {
     sink$.addListener ({next: onNext, error: identity, complete: identity});
-    return {select: function select(handler) {
-      var type = handler.type;
-      return action$.filter (function(action) {
-        return action.type === type;
-      });
-    }};
+    return {
+        select: function select(handler) {
+          var type = handler.type;
+          return action$.filter (function(action) {
+            return action.type === type;
+          });
+        },
+        all: function all() {
+          return action$.map (identity);
+        }
+    };
   }
 
   function cycleMiddleware() {

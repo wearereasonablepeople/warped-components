@@ -25,6 +25,10 @@ var Stream = xstream.Stream;
 var el = React.createElement;
 var render = TestRenderer.create;
 
+function wait(ms) {
+  return new Promise (function(res) { setTimeout (res, ms); });
+}
+
 function eq(actual) {
   return function eqq(expected) {
     try {
@@ -44,7 +48,15 @@ function mockAction(payload) {
 function mockCycle(sources) {
   return {
     state: sources.state,
-    action: sources.action && sources.action.select ({type: 'increment'}).map (mockAction)
+    action: sources.action && sources.action.select ({type: 'increment'}).map (function() { return mockAction (1); })
+  };
+}
+
+function actionAllCycle(sources) {
+  return {
+    action: sources.action.all ().filter (function(action) {
+      return action.type === 'decrement';
+    }).map (function() { return mockAction (-1); })
   };
 }
 
@@ -58,7 +70,7 @@ function mockReducer(state, action) {
 
 function mockReducerCount(state, action) {
   return action.type === 'MOCK' ?
-         Object.assign ({}, state, {count: state.count + 1}) :
+         Object.assign ({}, state, {count: state.count + action.payload}) :
          state;
 }
 
@@ -67,10 +79,17 @@ function mockSelector(state) {
 }
 
 function MockComponent(props) {
-  return el (
-    'button',
-    {onClick: function() { props.increment (); }},
-    props.text
+  return el ('div', {},
+    el (
+      'button',
+      {onClick: function() { props.increment (); }},
+      'increment'
+    ),
+    el (
+      'button',
+      {onClick: function() { props.decrement (); }},
+      'decrement'
+    )
   );
 }
 
@@ -110,7 +129,7 @@ test ('combineReducers', function() {
   eq (zeroReducers ({}, mockAction (42))) ({});
   eq (oneReducer ({}, mockAction (42))) ({lastAction: 'MOCK'});
   eq (twoReducers ({count: 1}, mockAction (42)))
-     ({lastAction: 'MOCK', count: 2});
+     ({lastAction: 'MOCK', count: 43});
 });
 
 test ('combineCycles', function() {
@@ -167,9 +186,12 @@ test ('warped', function() {
   var PartlyWarped = warped ({reducer: mockReducer}) (null);
   var Warped = warped ({
     reducer: mockReducerCount,
-    effects: mockCycle,
+    effects: combineCycles ([mockCycle, actionAllCycle]),
     selectors: {text: mockSelector},
-    actions: {increment: mockAction}
+    actions: {
+      increment: function() { return mockAction (1); },
+      decrement: function() { return mockAction (-1); }
+    }
   }) (MockComponent);
 
   eq (Warped.displayName) ('Connect(Collecting(MockComponent))');
@@ -187,9 +209,11 @@ test ('warped', function() {
   eq (typeof mockComponent.props.increment) ('function');
   eq (mockComponent.parent.type.displayName) ('CollectorManager(MockComponent)');
 
-  return new Promise (function(res) { setTimeout (res, 40); }).then (function() {
-    mockComponent.findByType ('button').props.onClick ();
+  return wait (40).then (function() {
+    mockComponent.find ((a) => a.children[0] === 'increment').props.onClick ();
     eq (mockComponent.props.text) ('1');
+    mockComponent.find ((a) => a.children[0] === 'decrement').props.onClick ();
+    eq (mockComponent.props.text) ('0');
     renderer.unmount ();
   });
 

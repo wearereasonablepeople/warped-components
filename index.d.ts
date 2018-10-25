@@ -1,15 +1,19 @@
-import {Stream} from 'xstream';
-import * as redux from 'redux';
 import * as react from 'react';
+import * as redux from 'redux';
+import {Stream} from 'xstream';
+// https://www.typescriptlang.org/docs/handbook/release-notes/typescript-2-8.html
+type Omit<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>;
+type StrMap<T> = Record<string, T>;
+
 export type Selector<TState> = (state: TState) => any;
 export type Selectors<TState> = StrMap<Selector<TState>>;
-export type StandardAction<TPayload> = {type: string; payload: TPayload};
 export type ActionCreator<TPayload> = (
-  payload: TPayload
+  payload: TPayload,
 ) => StandardAction<TPayload>;
-// https://www.typescriptlang.org/docs/handbook/release-notes/typescript-2-8.html
-type Omit<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>
-type StrMap<T> = Record<string, T>;
+
+export interface StandardAction<TPayload> {
+  type: string; payload: TPayload;
+}
 
 /** Utility to retrieve a payload type from an ActionCreator */
 export type PayloadType<T extends ActionCreator<any>>
@@ -19,7 +23,7 @@ export type PayloadType<T extends ActionCreator<any>>
 export type Warped<W extends ComponentWarper<any>>
   = W extends ComponentWarper<infer P> ? P : any;
 
-export type ActionSource<TPayloads> = {
+export interface ActionSource<TPayloads> {
   select<P extends TPayloads>(handler: {
     type: string;
     action?: ActionCreator<P>;
@@ -28,7 +32,7 @@ export type ActionSource<TPayloads> = {
     payload: P;
   }>;
   all(): Stream<{type: string; payload: TPayloads}>;
-};
+}
 
 type GetProps<C extends react.ComponentType<any>> =
   C extends react.ComponentType<infer P> ? P : never;
@@ -40,7 +44,7 @@ type ComponentWarper<P> = <C extends react.ComponentType<P & GetProps<C>>>(compo
 
 type CycleMain<So extends StrMap<any>, Si extends StrMap<Stream<any>>> = (sources: So) => Si;
 
-export type WarpedSources<TState, TPayloads> = {
+export interface WarpedSources<TState, TPayloads> {
   action: ActionSource<TPayloads>;
   state: Stream<TState>;
 }
@@ -78,7 +82,7 @@ export interface WarpedFn {
     selectors: S;
     actions: A;
     effects?: CycleMain<WarpedSources<TState, PayloadType<A[keyof A]>>, any>;
-  }): ComponentWarper<WarpedProps<A, S>>
+  }): ComponentWarper<WarpedProps<A, S>>;
 }
 
 export declare const warped: WarpedFn;
@@ -127,9 +131,7 @@ export declare function compileDispatchers<T extends StrMap<any>>(actions: T):
 export declare function combineReducers<T>(reducers: [redux.Reducer<T>]):
   redux.Reducer<T>;
 
-type Driver<Si , So> = {
-  (stream: Si, driverName?: string): So;
-};
+type Driver<Si , So> = (stream: Si, driverName?: string) => So;
 
 /** Obtain the return types from a map of functions */
 export type ReturnTypes<T extends StrMap<(...args: any[]) => any>> = {
@@ -145,4 +147,4 @@ export declare function combineCycles<
   So extends StrMap<any>,
   Si extends StrMap<Stream<any>>,
   mainSinks extends Si,
->(mains: ((sources: So) => Partial<Si>)[]): CycleMain<So, Si>;
+>(mains: Array<(sources: So) => Partial<Si>>): CycleMain<So, Si>;
