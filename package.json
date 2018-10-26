@@ -29,7 +29,7 @@
   "license": "MIT",
   "dependencies": {
     "@cycle/run": "^5.1.0",
-    "react-collect": "^1.0.0",
+    "react-collect": "^1.0.3",
     "react-redux": "^5.0.7",
     "redux": "^4.0.0"
   },
