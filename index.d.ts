@@ -15,15 +15,20 @@ export interface StandardAction<TPayload> {
   type: string; payload: TPayload;
 }
 
+/** Obtain the return types from a map of functions */
+export type ReturnTypes<T extends StrMap<(...args: any[]) => any>> = {
+  [K in keyof T]: ReturnType<T[K]>
+};
+
 /** Utility to retrieve a payload type from an ActionCreator */
 export type PayloadType<T extends ActionCreator<any>>
-  = T extends ActionCreator<infer P> ? P : any;
+  = T extends ActionCreator<infer P> ? P : never;
 
 /** Obtain the injected props of a partially-applied `warped` function */
 export type Warped<W extends ComponentWarper<any>>
-  = W extends ComponentWarper<infer P> ? P : any;
+  = W extends ComponentWarper<infer P> ? P : never;
 
-export interface ActionSource<TPayloads> {
+interface ActionSource<TPayloads> {
   select<P extends TPayloads>(handler: {
     type: string;
     action?: ActionCreator<P>;
@@ -40,13 +45,19 @@ type GetProps<C extends react.ComponentType<any>> =
 type ComponentWarper<P> = <C extends react.ComponentType<P & GetProps<C>>>(component: C) =>
     react.ComponentType<JSX.LibraryManagedAttributes<C, Omit<GetProps<C>, keyof P>>>;
 
-/* Utilities for warped() */
-
 type CycleMain<So extends StrMap<any>, Si extends StrMap<Stream<any>>> = (sources: So) => Si;
 
-export interface WarpedSources<TState, TPayloads> {
-  action: ActionSource<TPayloads>;
-  state: Stream<TState>;
+/**
+ * Obtain the types of Cycle sources supplied to the effects of a warped component
+ * 
+ * S should be the your top-level redux state
+ * 
+ * P should be the possible payloads for actions handled by the component's reducer
+ * (or any other that you wish to handle in the Cycle application)
+ */
+export interface WarpedSources<S, P> {
+  action: ActionSource<P>;
+  state: Stream<S>;
 }
 
 type WarpedProps<A extends StrMap<ActionCreator<any>>, S extends Selectors<any>> =
@@ -132,11 +143,6 @@ export declare function combineReducers<T>(reducers: [redux.Reducer<T>]):
   redux.Reducer<T>;
 
 type Driver<Si , So> = (stream: Si, driverName?: string) => So;
-
-/** Obtain the return types from a map of functions */
-export type ReturnTypes<T extends StrMap<(...args: any[]) => any>> = {
-  [K in keyof T]: ReturnType<T[K]>
-};
 
 /**
  * Given an array of `main` functions that take sources and return sinks,
