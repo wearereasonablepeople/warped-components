@@ -30,7 +30,7 @@
   "dependencies": {
     "@cycle/run": "^5.1.0",
     "react-collect": "^1.0.3",
-    "react-redux": "^5.0.7",
+    "react-redux": "^6.0.0",
     "redux": "^4.0.0"
   },
   "peerDependencies": {
