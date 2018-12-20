@@ -43,7 +43,7 @@
     "oletus": "^1.1.5",
     "react": "^16.4.1",
     "react-test-renderer": "^16.4.1",
-    "rollup": "^0.67.0",
+    "rollup": "^0.68.0",
     "sanctuary-scripts": "^2.0.0",
     "sanctuary-show": "^1.0.0",
     "sanctuary-type-classes": "^9.0.0",
