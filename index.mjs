@@ -144,7 +144,7 @@ export function makeStateDriver(store) {
 //. recommend using an Optics library like [Ramda][3]'s `lens` related
 //. functions or [partial.lenses][4].
 //.
-//. ```js
+//. ```jsx
 //. import {warped} from 'warped-components';
 //. import {createReducer, noopAction} from 'warped-reducers';
 //. import {lensProp, compose, set, view} from 'ramda';
@@ -221,7 +221,7 @@ export function warped(def) {
 //. * `enhancer`: Store enhancer, allows middleware, debug tooling, etcetera.
 //. * `drivers`: Cycle drivers determine what kind of effects can occur.
 //.
-//. ```js
+//. ```jsx
 //. import {WarpedApp} from 'warped-components';
 //. import {devToolsEnhancer} from 'redux-devtools-extension';
 //. import {makeHTTPDriver} from '@cycle/http';
