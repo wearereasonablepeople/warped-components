@@ -28,7 +28,7 @@
   "author": "Aldwin Vlasblom <aldwin.vlasblom@gmail.com> (https://github.com/Avaq)",
   "license": "MIT",
   "dependencies": {
-    "@cycle/run": "^5.1.0",
+    "@cycle/run": "5.2.0",
     "react-collect": "^1.0.3",
     "react-redux": "^5.0.7",
     "redux": "^4.0.0"
