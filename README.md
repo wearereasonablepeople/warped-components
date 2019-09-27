@@ -6,6 +6,10 @@
 An opinionated way to build frontend applications.
 Works nicely with [Warped Reducers][1].
 
+## Installation
+
+Warped Components requires **React 16.8.3 or later**
+
 ```console
 $ npm install --save warped-components react xstream
 ```
@@ -50,7 +54,7 @@ This approach has the following benefits:
 
 ### Automatic wiring
 
-#### <a name="warped" href="https://github.com/wearereasonablepeople/warped-components/blob/v0.2.6/index.mjs#L114">`warped :: WarpedOptions -⁠> ReactComponent -⁠> ReactComponent`</a>
+#### <a name="warped" href="https://github.com/wearereasonablepeople/warped-components/blob/v0.3.0/index.mjs#L118">`warped :: WarpedOptions -⁠> ReactComponent -⁠> ReactComponent`</a>
 
 Does zero to two distinct things to a component, depending on the options:
 
@@ -83,7 +87,7 @@ For the definition of `actions` and `reducer`, we recommend using
 recommend using an Optics library like [Ramda][3]'s `lens` related
 functions or [partial.lenses][4].
 
-```js
+```jsx
 import {warped} from 'warped-components';
 import {createReducer, noopAction} from 'warped-reducers';
 import {lensProp, compose, set, view} from 'ramda';
@@ -130,7 +134,7 @@ export const App = ({data, loadData}) => (
 export default warped ({reducer, effects, selectors, actions}) (App);
 ```
 
-#### <a name="WarpedApp" href="https://github.com/wearereasonablepeople/warped-components/blob/v0.2.6/index.mjs#L206">`WarpedApp :: ReactComponent`</a>
+#### <a name="WarpedApp" href="https://github.com/wearereasonablepeople/warped-components/blob/v0.3.0/index.mjs#L210">`WarpedApp :: ReactComponent`</a>
 
 This component does the wiring for your application:
 
@@ -148,7 +152,7 @@ It takes the following optional props:
 * `enhancer`: Store enhancer, allows middleware, debug tooling, etcetera.
 * `drivers`: Cycle drivers determine what kind of effects can occur.
 
-```js
+```jsx
 import {WarpedApp} from 'warped-components';
 import {devToolsEnhancer} from 'redux-devtools-extension';
 import {makeHTTPDriver} from '@cycle/http';
@@ -172,7 +176,7 @@ If you prefer using [React Redux][5] and [Redux][6] directly, rather than
 using the [`WarpedApp`](#WarpedApp), you can use these utilities to ease
 the interaction with [Warped Reducers][1].
 
-#### <a name="compileSelectors" href="https://github.com/wearereasonablepeople/warped-components/blob/v0.2.6/index.mjs#L328">`compileSelectors :: StrMap ((a, b) -⁠> c) -⁠> (a, b) -⁠> StrMap c`</a>
+#### <a name="compileSelectors" href="https://github.com/wearereasonablepeople/warped-components/blob/v0.3.0/index.mjs#L332">`compileSelectors :: StrMap ((a, b) -⁠> c) -⁠> (a, b) -⁠> StrMap c`</a>
 
 Given a mapping of selectors, returns a `mapStateToProps` function, as
 accepted by `connect` from React Redux.
@@ -181,20 +185,20 @@ The selectors are given the state (and previous props), and are expected
 to return a slice of the state. We recommend using Optics, such as the
 `lens`-related functions from [Ramda][2], to create the selectors.
 
-#### <a name="compileDispatchers" href="https://github.com/wearereasonablepeople/warped-components/blob/v0.2.6/index.mjs#L346">`compileDispatchers :: StrMap (a -⁠> b) -⁠> (b -⁠> c) -⁠> StrMap (a -⁠> c)`</a>
+#### <a name="compileDispatchers" href="https://github.com/wearereasonablepeople/warped-components/blob/v0.3.0/index.mjs#L350">`compileDispatchers :: StrMap (a -⁠> b) -⁠> (b -⁠> c) -⁠> StrMap (a -⁠> c)`</a>
 
 Given a mapping of action creators, as returned from
 [createReducer](#createReducer), returns a `mapDispatchToProps` function,
 as accepted by `connect` from React Redux.
 
-#### <a name="combineReducers" href="https://github.com/wearereasonablepeople/warped-components/blob/v0.2.6/index.mjs#L363">`combineReducers :: Array ((a, b) -⁠> a) -⁠> (a, b) -⁠> a`</a>
+#### <a name="combineReducers" href="https://github.com/wearereasonablepeople/warped-components/blob/v0.3.0/index.mjs#L367">`combineReducers :: Array ((a, b) -⁠> a) -⁠> (a, b) -⁠> a`</a>
 
 Given an array of reducers, returns a single reducer which transforms the
 state by calling all reducers in sequence.
 
 ### Cycle utilities
 
-#### <a name="combineCycles" href="https://github.com/wearereasonablepeople/warped-components/blob/v0.2.6/index.mjs#L377">`combineCycles :: Array (StrMap Any -⁠> StrMap Stream) -⁠> StrMap Any -⁠> StrMap Stream`</a>
+#### <a name="combineCycles" href="https://github.com/wearereasonablepeople/warped-components/blob/v0.3.0/index.mjs#L381">`combineCycles :: Array (StrMap Any -⁠> StrMap Stream) -⁠> StrMap Any -⁠> StrMap Stream`</a>
 
 Given an array of `main` functions that take sources and return sinks,
 returns a single `main` function which combines the effects of each.
