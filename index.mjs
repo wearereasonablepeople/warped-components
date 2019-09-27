@@ -6,6 +6,10 @@
 //. An opinionated way to build frontend applications.
 //. Works nicely with [Warped Reducers][1].
 //.
+//. ## Installation
+//.
+//. Warped Components requires **React 16.8.3 or later**
+//.
 //. ```console
 //. $ npm install --save warped-components react xstream
 //. ```
