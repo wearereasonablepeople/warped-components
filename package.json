@@ -30,18 +30,19 @@
   "dependencies": {
     "@cycle/run": "^5.1.0",
     "react-collect": "^1.0.3",
-    "react-redux": "^5.0.7",
+    "react-redux": "^7.1.1",
     "redux": "^4.0.0"
   },
   "peerDependencies": {
-    "react": "^16.0.0",
+    "react": "^16.8.3",
     "xstream": "^11.0.0"
   },
   "devDependencies": {
     "coveralls": "^3.0.2",
     "esm": "^3.0.68",
     "oletus": "^1.1.5",
-    "react": "^16.4.1",
+    "react": "^16.8.3",
+    "react-dom": "^16.8.3",
     "react-test-renderer": "^16.4.1",
     "rollup": "~1.18",
     "sanctuary-scripts": "^3.2.0",
