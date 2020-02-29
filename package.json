@@ -44,7 +44,7 @@
     "react": "^16.8.3",
     "react-dom": "^16.8.3",
     "react-test-renderer": "^16.4.1",
-    "rollup": "~1.18",
+    "rollup": "~1.32.0",
     "sanctuary-scripts": "^3.2.0",
     "sanctuary-show": "^2.0.0",
     "sanctuary-type-classes": "^11.0.0",
