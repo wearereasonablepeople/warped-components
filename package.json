@@ -4,6 +4,7 @@
   "description": "An opinionated way to build frontend applications",
   "main": "index",
   "module": "index.mjs",
+  "types": "index.d.ts",
   "scripts": {
     "coverage": "nyc report --reporter=text-lcov | coveralls",
     "doctest": "sanctuary-doctest",
@@ -23,7 +24,8 @@
     "/index.mjs",
     "/LICENSE",
     "/package.json",
-    "/README.md"
+    "/README.md",
+    "/index.d.ts"
   ],
   "author": "Aldwin Vlasblom <aldwin.vlasblom@gmail.com> (https://github.com/Avaq)",
   "license": "MIT",
@@ -38,6 +40,7 @@
     "xstream": "^11.0.0"
   },
   "devDependencies": {
+    "@types/react": "^16.4.7",
     "coveralls": "^3.0.2",
     "esm": "^3.0.68",
     "oletus": "^3.0.0",

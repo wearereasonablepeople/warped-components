@@ -150,7 +150,8 @@ export function makeStateDriver(store) {
 //.
 //. ```jsx
 //. import {warped} from 'warped-components';
-//. import {createReducer, noopAction} from 'warped-reducers';
+//. import {createReducer, noopAction, getTypes,
+//.   getActions} from 'warped-reducers';
 //. import {lensProp, compose, set, view} from 'ramda';
 //. import React from 'react';
 //.
@@ -162,14 +163,16 @@ export function makeStateDriver(store) {
 //. );
 //.
 //. // We use warped-reducers to create our reducer and actions.
-//. export const {types, actions, reducer} = createReducer ('App') ({
+//. export const {handlers, reducer} = createReducer ('App') ({
 //.   loadData: noopAction,
 //.   setData: set (dataState)
 //. });
+//. const types = getTypes (handlers);
+//. const actions = getActions (handlers);
 //.
 //. // A small Cycle app describes the side-effects of our component.
 //. export const effects = ({action, http}) => ({
-//.   http: action.filter (({type}) => type === types.loadData).mapTo ({
+//.   http: action.select (handlers.loadData).mapTo ({
 //.     url: 'https://api.github.com/users/Avaq',
 //.     category: types.loadData
 //.   }),
@@ -254,7 +257,17 @@ export function WarpedApp(props) {
 
   function actionDriver(sink$) {
     sink$.addListener ({next: onNext, error: identity, complete: identity});
-    return action$;
+    return {
+        select: function select(handler) {
+          var type = handler.type;
+          return action$.filter (function(action) {
+            return action.type === type;
+          });
+        },
+        all: function all() {
+          return action$.map (identity);
+        }
+    };
   }
 
   function cycleMiddleware() {
@@ -350,7 +363,7 @@ export function compileSelectors(selectors) {
 //# compileDispatchers :: StrMap (a -> b) -> (b -> c) -> StrMap (a -> c)
 //.
 //. Given a mapping of action creators, as returned from
-//. [createReducer](#createReducer), returns a `mapDispatchToProps` function,
+//. [createReducer][], returns a `mapDispatchToProps` function,
 //. as accepted by `connect` from React Redux.
 export function compileDispatchers(actions) {
   return function mapDispatchToProps(dispatch) {
@@ -396,9 +409,101 @@ export function combineCycles(mains) {
   };
 }
 
+//. ## Typescript
+//.
+//. ### Usage
+//.
+//. 1. Partially apply [`warped`](#warped).
+//. 2. Use the `Warped<T>` utility type to determine the injected props.
+//. 3. Combine it in an Intersection Type (i.e. `&`) with any other props.
+//.
+//. ### Example
+//.
+//. #### [WarpedApp](#WarpedApp) setup
+//.
+//. ```tsx
+//. import {WarpedApp, ReturnTypes} from 'warped-components';
+//. import {devToolsEnhancer} from 'redux-devtools-extension';
+//. import {makeHTTPDriver} from '@cycle/http';
+//. import {render} from 'react-dom';
+//. import React from 'react';
+//. import App from './my-app';
+//.
+//. const drivers = {http: makeHTTPDriver ()};
+//.
+//. // Use `ReturnTypes<T>` on the drivers object to obtain the Sources for them.
+//. // this case will resolve to `{http: HttpSource}` from `@cycle/http`
+//. export type AppSources = ReturnTypes<typeof drivers>;
+//.
+//. render (
+//.   <WarpedApp enhancer={devToolsEnhancer ()} drivers={drivers}>
+//.     <App />
+//.   </WarpedApp>,
+//.   document.getElementById ('app')
+//. );
+//. ```
+//.
+//. ### [`warp`](#warp)ing a Component
+//.
+//. ```tsx
+//. import {warped, WarpedSources, Warped} from 'warped-components';
+//. import {
+//.   createReducer, noopAction, getTypes, getActions,
+//.   PayloadsOf
+//. } from 'warped-reducers';
+//. import * as React from 'react';
+//. import {Lens} from 'monocle-ts';
+//.
+//. interface State {
+//.   app: {
+//.     data: string;
+//.   }
+//. }
+//.
+//. const dataState = Lens.fromPath <State>() (['app', 'data'])
+//.
+//. export const selectors = {
+//.   data: dataState.get
+//. };
+//. export const {handlers, reducer} = createReducer ('App') ({
+//.   loadData: noopAction,
+//.   setData: dataState.set
+//. });
+//. const types = getTypes (handlers);
+//. const actions = getActions (handlers);
+//.
+//. // Use `WarpedSources<S, P>` to get the sources injected into your Cycle apps
+//. type Sources = WarpedSources<State, PayloadsOf<typeof handlers>>
+//.    & AppSources;
+//. export const effects = ({action, http}: Sources) => ({
+//.   http: action.select (handlers.loadData).mapTo ({
+//.     url: 'https://api.github.com/users/Avaq',
+//.     category: types.loadData
+//.   }),
+//.   action: http.select (types.loadData).flatten ().map (({body: {name}}) =>
+//.     actions.setData (name)
+//.   )
+//. });
+//.
+//. const warp = warped ({reducer, effects, selectors, actions});
+//. // Use Warped<T> to get the injected props for your components,
+//. // combine with other props with with `&`
+//. type Props = Warped<typeof warp> & {otherProp?: string};
+//.
+//. export const App = ({data, loadData}: Props) => (
+//.   <div>
+//.     <h1>{data || 'name unknown'}</h1>
+//.     <button onClick={loadData}>Load!</button>
+//.   </div>
+//. );
+//.
+//. export default warp (App);
+//. ```
+
 //. [1]: https://github.com/wearereasonablepeople/warped-reducers
 //. [2]: https://github.com/wearereasonablepeople/react-collect
 //. [3]: http://ramdajs.com/
 //. [4]: https://github.com/calmm-js/partial.lenses
 //. [5]: https://github.com/reactjs/react-redux
 //. [6]: http://redux.js.org/
+//. [createReducer]: https://github.com/wearereasonablepeople/warped-reducers#createReducer
